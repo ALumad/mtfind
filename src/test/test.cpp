@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 #include "lib/alg.h"
-
+#include <sstream>
 TEST(AlgoTest, SameResult)
 {
     std::vector<std::string> strings = 
@@ -15,7 +15,9 @@ TEST(AlgoTest, SameResult)
     for (auto& s : strings){
         auto kmp = KMP(pattern, s);
         auto fnd = find(pattern, s);
+
         ASSERT_EQ(kmp.size(),fnd.size()) << s;
+
         for (int i = 0; i < kmp.size(); ++i) {
             ASSERT_EQ(kmp[i].first, fnd[i].first) << s;
             ASSERT_EQ(kmp[i].second, fnd[i].second) << s;
@@ -71,6 +73,30 @@ TEST(AlgoTest, KMPTest4)
     auto kmp = KMP(p,s);
     ASSERT_EQ(kmp.size(),0);
 }
+
+
+TEST(AlgoTest, KMPTest5)
+{
+    std::string str = "AAAAAAOneAAAA";
+    std::string p = "A???A";
+    auto kmp = KMP(p, str);
+    std::stringstream ss;        
+    for(auto [f,s]: kmp){
+        ss << s << " ";
+    }           
+    ASSERT_EQ(kmp.size(),3) << ss.str();
+    ASSERT_EQ(kmp[0].first, 1);
+    ASSERT_EQ(kmp[1].first, 2);
+    ASSERT_EQ(kmp[2].first, 6);
+    ASSERT_EQ(kmp[0].second, "AAAAA");
+    ASSERT_EQ(kmp[1].second, "AAAAA");
+    ASSERT_EQ(kmp[2].second, "AOneA");
+
+
+       
+
+}
+
 
 int main(int argc, char** argv)
 {

@@ -1,36 +1,45 @@
-#include <sstream>
 #include "alg.h"
-std::vector<size_t> fprefix(const std::string& s){
-    size_t n = s.length();
-    std::vector<size_t> res(n,0);
+
+inline std::vector<unsigned> fprefix(const std::string& p){
+    size_t n = p.length();
+    std::vector<unsigned> res(n,0);
 
     for (size_t i = 1; i < n; ++i){
         size_t j = res[i-1];
-
-        while (j > 0 && s[i] != s[j] &&  s[j] != '?')
-            j = res[j-1];
-
-        if (s[i] == s[j] || s[j] == '?')
+        if (p[i] == p[i-1] || p[i] == '?'){
             ++j;
-        
-        res[i] = j;
+            res[i] = j;
+        } else if (j == 0){
+            continue;
+        } else {
+            j = res[j-1];
+        }
     }
     return res;
 
 }
 
-std::vector<std::pair<size_t, std::string>> KMP(const std::string& pattern, const std::string& s){
-    std::stringstream ss;
-    ss << pattern << -1 << s;
-    auto prefix = fprefix(ss.str());
+std::vector<std::pair<size_t, std::string>> KMP(const std::string& p, const std::string& s){
+    auto prefix = fprefix(p);
     std::vector<std::pair<size_t, std::string>> res;
-    std::size_t n = pattern.size();
-    for (int i = 2*n+1; i < prefix.size(); ++i){
-        if (prefix[i] == pattern.size()){
-            int idx = i -1- 2*n;
-            res.push_back({idx+1, s.substr(idx,n)});
+    std::size_t n = p.size();
+    for (unsigned i = 0, j=0; i < s.size();) {
+        if (s[i]==p[j] || p[j]=='?'){
+            ++i,++j;   
+            if (j == p.size()){
+                res.push_back({i-p.size()+1,s.substr(i-p.size(),p.size())});
+                j = 0;
+                i = res.back().first;
+
+            }                     
+        } else if (j == 0) {
+            ++i;
+        } else {
+            j = prefix[j-1];
         }
+
     }
+    
     return res;
 }
 
