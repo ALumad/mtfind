@@ -4,10 +4,9 @@
 #include <iostream>
 TextProcessor::TextProcessor(const std::string& pattern):
 _mt(_rd()), 
-_parsers(std::thread::hardware_concurrency(),{pattern})
-
+_qstring(std::make_shared<ThreadSafeQueue<std::string>>()),
+_parsers(std::thread::hardware_concurrency(),{pattern, _qstring})
 {
-
 }
 
 void TextProcessor::Add(const std::string& s){

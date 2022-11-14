@@ -2,7 +2,6 @@
 #include "parser.h"
 #include "alg.h"
 #include <thread>
-
 bool Result::operator< (const Result& other){
     if (line != other.line)
         return line < other.line;
@@ -14,19 +13,21 @@ bool operator< (const Result& a,const Result& b){
     return a.pos < b.pos; 
 }
 
-Parser::Parser(const std::string& pattern):
-_pattern(pattern){}
+Parser::Parser(const std::string& pattern, std::shared_ptr<ThreadSafeQueue<std::string>> qstring):
+_qstring(qstring), _pattern(pattern){
+}
 
 
 Parser::Parser(const Parser& other):
-    _pattern(other._pattern)
+    _pattern(other._pattern),
+    _qstring(other._qstring)
 {
 
 }
 
 
 void Parser::add(const std::string& s){
-    _qstring.push(s);
+    _qstring->push(s);
     std::scoped_lock lk(_b_mtx);
     if (!_is_processing) {
         _is_processing = true;
@@ -44,7 +45,7 @@ void Parser::processing(){
      
     while (true)
     {
-        auto linestr = _qstring.pop();
+        auto linestr = _qstring->pop();
         auto res = KMP(_pattern,linestr.second);
         for (auto& w: res) {
             Result e;
@@ -53,7 +54,7 @@ void Parser::processing(){
             e.str = w.second,
             _qresult.push(e);
         }        
-        if (_qstring.empty())  break;
+        if (_qstring->empty())  break;
 
     }   
     std::scoped_lock lk(_b_mtx);

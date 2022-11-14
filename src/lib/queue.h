@@ -25,7 +25,6 @@ public:
     }
     std::pair<std::size_t,T> pop(){
         std::scoped_lock lk(_q_mtx);
-        if (_q.empty()) throw std::runtime_error("sadasdasdas");
         std::pair<std::size_t,T>  res = _q.front();
         _q.pop();
         return res;
