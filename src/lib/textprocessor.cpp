@@ -12,6 +12,7 @@ void TextProcessor::Add(const std::string& s){
     for (auto& p : _parsers){
         if (p.is_proccessing()) continue;
         p.add(s);    
+        return;
     }
     _parsers.back().add(s);
 }
