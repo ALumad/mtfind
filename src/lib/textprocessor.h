@@ -1,7 +1,6 @@
 #pragma once
 #include <set>
 #include <string>
-#include <random>
 #include <vector>
 #include "parser.h"
 
@@ -14,6 +13,4 @@ private:
     std::shared_ptr<ThreadSafeQueue<std::string>> _qstring;
     std::vector<Parser> _parsers;
 
-    std::random_device _rd;
-    std::mt19937 _mt;
 };

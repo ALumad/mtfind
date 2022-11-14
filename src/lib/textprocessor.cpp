@@ -3,16 +3,17 @@
 #include <thread>
 #include <iostream>
 TextProcessor::TextProcessor(const std::string& pattern):
-_mt(_rd()), 
 _qstring(std::make_shared<ThreadSafeQueue<std::string>>()),
 _parsers(std::thread::hardware_concurrency(),{pattern, _qstring})
 {
 }
 
 void TextProcessor::Add(const std::string& s){
-    std::uniform_int_distribution<int> dist(0,_parsers.size()-1);
-    int idx = dist(_mt);
-    _parsers.at(idx).add(s);
+    for (auto& p : _parsers){
+        if (p.is_proccessing()) continue;
+        p.add(s);    
+    }
+    _parsers.back().add(s);
 }
 
 
