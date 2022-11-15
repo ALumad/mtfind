@@ -10,7 +10,8 @@ TEST(AlgoTest, SameResult)
         "O?e",
         "aaa???aaa"
         "AAAAAAOneAAAA",
-        "AxA"
+        "AxA",
+        "One two OraeOle"
     };
     std::string pattern = "O?e";
     for (auto& s : strings){
@@ -97,6 +98,24 @@ TEST(AlgoTest, KMPTest5)
        
 
 }
+TEST(AlgoTest, KMPTest6)
+{
+    std::string str = "Test Cest Cesl Qerty";
+    std::string p = "?es?";
+    auto kmp = KMP(p, str);
+    std::stringstream ss;        
+    for(auto [f,s]: kmp){
+        ss << s << " ";
+    }           
+    ASSERT_EQ(kmp.size(),3) << ss.str();
+    ASSERT_EQ(kmp[0].first, 1);
+    ASSERT_EQ(kmp[1].first, 6);
+    ASSERT_EQ(kmp[2].first, 11);
+    ASSERT_EQ(kmp[0].second, "Test");
+    ASSERT_EQ(kmp[1].second, "Cest");
+    ASSERT_EQ(kmp[2].second, "Cesl"); 
+}
+
 
 TEST(TextProcessor, Test1){
     std::string s = "One two OraeOle";

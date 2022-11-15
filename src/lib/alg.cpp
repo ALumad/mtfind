@@ -1,5 +1,4 @@
 #include "alg.h"
-#include <sstream>
 inline std::vector<unsigned> fprefix(const std::string& p){
     size_t n = p.length();
     std::vector<unsigned> res(n,0);
@@ -35,7 +34,10 @@ std::vector<std::pair<size_t, std::string>> KMP(const std::string& p, const std:
         } else if (j == 0) {
             ++i;
         } else {
-            j = prefix[j-1];
+            do {
+                j = prefix[j-1];
+            }
+            while (j != 0 && p[j-1] != '?');
         }
 
     }
