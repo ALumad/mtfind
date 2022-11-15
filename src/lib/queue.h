@@ -25,6 +25,7 @@ public:
     }
     std::pair<std::size_t,T> pop(){
         std::scoped_lock lk(_q_mtx);
+        if (_q.empty()) return {0,{}};                
         std::pair<std::size_t,T>  res = _q.front();
         _q.pop();
         return res;

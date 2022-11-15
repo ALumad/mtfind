@@ -46,6 +46,7 @@ void Parser::processing(){
     while (true)
     {
         auto linestr = _qstring->pop();
+        if (linestr.first == 0) break;
         auto res = KMP(_pattern,linestr.second);
         for (auto& w: res) {
             Result e;
