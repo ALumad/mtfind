@@ -1,5 +1,6 @@
 #include <gtest/gtest.h>
 #include "lib/alg.h"
+#include "lib/textprocessor.h"
 #include <sstream>
 TEST(AlgoTest, SameResult)
 {
@@ -97,7 +98,28 @@ TEST(AlgoTest, KMPTest5)
 
 }
 
+TEST(TextProcessor, Test1){
+    std::string s = "One two OraeOle";
+    std::string p = "O?e";
+    TextProcessor tp(p);
+    tp.Add(s);    
+    auto res = tp.GetAllResult();
+ /*  for (auto el: res){
+        std::cout << el.str << std::endl;
+    }*/
+    ASSERT_EQ(res.size(),2);
+    auto el = *res.begin();
+    
+    ASSERT_EQ(el.str, "One");  
+    ASSERT_EQ(el.line, 1);    
+    ASSERT_EQ(el.pos,  1);        
 
+    el = *res.rbegin();
+    ASSERT_EQ(el.str, "Ole");  
+    ASSERT_EQ(el.line, 1);    
+    ASSERT_EQ(el.pos,  13);    
+
+}
 int main(int argc, char** argv)
 {
     ::testing::InitGoogleTest(&argc, argv);

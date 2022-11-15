@@ -1,5 +1,5 @@
 #include "alg.h"
-
+#include <sstream>
 inline std::vector<unsigned> fprefix(const std::string& p){
     size_t n = p.length();
     std::vector<unsigned> res(n,0);
@@ -58,3 +58,5 @@ std::vector<std::pair<size_t, std::string>> find(const std::string& pattern, con
     }
     return res;           
 }
+
+

@@ -9,3 +9,4 @@ std::vector<std::pair<size_t, std::string>> KMP(const std::string& pattern, cons
 
 //O(n*m)
 std::vector<std::pair<size_t, std::string>> find(const std::string& pattern, const std::string& s);
+

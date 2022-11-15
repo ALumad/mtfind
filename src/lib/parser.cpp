@@ -46,7 +46,7 @@ void Parser::processing(){
     while (true)
     {
         auto linestr = _qstring->pop();
-        auto res = KMP(_pattern,linestr.second);
+        auto res = find(_pattern,linestr.second);
         for (auto& w: res) {
             Result e;
             e.line = linestr.first,
